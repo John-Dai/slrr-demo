@@ -164,7 +164,7 @@ public class Bot extends Racer
 
 			//kocsi bezuzva
 			if( car.id() )
-//			System.log( "deleted: " + car.id() );
+			// System.log( "deleted: " + car.id() );
 			car.destroy();
 			car=null;       //eleg lenne csak ez, majd teszteljuk le!
 		}
@@ -382,7 +382,7 @@ public class Bot extends Racer
     public void pressHorn()
     {
 		if (horn) return;
-//              brain.queueEvent( null, GameType.EVENT_COMMAND, "AI_horn 1" );
+            //  brain.queueEvent( null, GameType.EVENT_COMMAND, "AI_horn 1" );
 		if (car)
 		{
             car.queueEvent( null, GameType.EVENT_COMMAND, "sethorn 1" );
@@ -398,7 +398,7 @@ public class Bot extends Racer
     public void releaseHorn()
     {
 		if (!horn) return;
-//              brain.queueEvent( null, GameType.EVENT_COMMAND, "AI_horn 0" );
+            //  brain.queueEvent( null, GameType.EVENT_COMMAND, "AI_horn 0" );
 		if (car)
 		{
             car.queueEvent( null, GameType.EVENT_COMMAND, "sethorn 0" );
@@ -511,12 +511,12 @@ public class Bot extends Racer
                 if (racemode == 0 || racemode == 1)
                   cprestige = nightVd.estimatePrestige() * VHC_PRESTIGE_SCALE;
                 else
-//                if (racemode == 4 || racemode == 5)
+            //    if (racemode == 4 || racemode == 5)
                   cprestige = botVd.estimatePrestige() * VHC_PRESTIGE_SCALE;
 
 		aprestige = pprestige*0.5 + cprestige*0.5;
 
-//		return aprestige + " (" + pprestige +  ":" + cprestige + ")";
+		// return aprestige + " (" + pprestige +  ":" + cprestige + ")";
 		return pprestige +  "/" + cprestige;
 	}
 

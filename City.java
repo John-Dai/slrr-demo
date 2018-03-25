@@ -184,7 +184,7 @@ public class City extends Track
 		if( nrLastPlaceDay != GameLogic.day )
 		{
 			nrLastPlaceDay = GameLogic.day;
-//			nrPlace = Math.random() * nrData.startPos.length;
+			// nrPlace = Math.random() * nrData.startPos.length;
 			nrPlace = Math.random()*5 + GameLogic.player.club*6;
 		}
 
@@ -249,8 +249,8 @@ public class City extends Track
 
 			if( GameLogic.gameMode == GameLogic.GM_FREERIDE || GameLogic.gameMode == GameLogic.GM_SINGLECAR )
 			{
-//				changeCamTarget(player.car);
-//				changeCamFollow();
+				// changeCamTarget(player.car);
+				// changeCamFollow();
 			} 
 			else
 			if( GameLogic.gameMode == GameLogic.GM_QUICKRACE )
@@ -278,8 +278,8 @@ public class City extends Track
 					raceBot.command("osd 0");
 					demoBot.command("osd 0");
 
-//					raceBot.createCar( map, GameLogic.carSaveDir + "ishuma1" );
-//					demoBot.createCar( map, GameLogic.carSaveDir + "einwagen" );
+					// raceBot.createCar( map, GameLogic.carSaveDir + "ishuma1" );
+					// demoBot.createCar( map, GameLogic.carSaveDir + "einwagen" );
 
 					VehicleDescriptor vd;
 					vd = GameLogic.getVehicleDescriptor( VehicleType.VS_DEMO );
@@ -303,13 +303,16 @@ public class City extends Track
 					}
 
 					player.car = demoBot.car;	//patch
-/*				} else
+				}
+				/*
+				else
 				{
 					createQuickRaceBot();
 					player.controller.command("leave " + player.car.id());
 					demoBot = new Bot( player.character.id(), Math.random()*1234, Math.random(), 2.0, 2.0, 1.0);
 					demoBot.createCar( map, new Vehicle(player.car) );
-*/				}
+				}
+				*/
 				changeCamTarget(demoBot.car);
 				changeCamTarget2(raceBot.car);	
 			} 
@@ -614,12 +617,14 @@ public class City extends Track
 			 ||( GameLogic.gameMode == GameLogic.GM_FREERIDE ))
 			{
 				killCar = 1;
-/*				if (player.car)
+				/*
+				if (player.car)
 				{
 					player.car.destroy();
 					player.car = null;
 				}
-*/			}
+				*/
+			}
 
 	
 			for( i=alertedScouts.size()-1; i>=0; i-- )
@@ -1066,7 +1071,7 @@ public class City extends Track
 		if( bot )
 		{
 			changeCamTarget(bot.car);
-//			changeCamFollow();
+			// changeCamFollow();
 			changeCamChase();
 		} 
 		else
@@ -1095,7 +1100,7 @@ public class City extends Track
 			if (player.club < 2 && playerID == clubMax-1)
 				clubMax += 1;
 			int extra = -1;
-//*
+
 			float psr = (player.winPinkSlips+1)*(player.winPinkSlips+1)+1;
 
 			int id;
@@ -1103,10 +1108,10 @@ public class City extends Track
 				if (id < clubMax && id >= clubMin && id != playerID && GameLogic.speedymen[id].lastRaceDay < GameLogic.day) {
 					nrOpponents.addElement( new Integer( id ));
 					GameLogic.speedymen[id].enabledPinkSlips = 0;
-//System.log("Pink: "+id+" - "+psr);
+					// System.log("Pink: "+id+" - "+psr);
 					if (id >= 30 && Math.random() < 1.0/psr) {
 						GameLogic.speedymen[id].enabledPinkSlips = 1;
-//System.log("Pink enabled!");
+					// System.log("Pink enabled!");
 					}
 				}
 			for (id = playerID-1; id >= playerID-1; id--)
@@ -1114,11 +1119,12 @@ public class City extends Track
 					nrOpponents.addElement( new Integer( id ));
 					GameLogic.speedymen[id].enabledPinkSlips = 0;
 				}
-/*			for (id = playerID+3; id <= playerID+5; id++)
+			/*	
+			for (id = playerID+3; id <= playerID+5; id++)
 				if (id < clubMax && id >= clubMin && id != playerID && GameLogic.speedymen[id].lastRaceDay < GameLogic.day) nrOpponents.addElement( new Integer( id ));
 			for (id = playerID-2; id >= playerID-3; id--)
 				if (id < clubMax && id >= clubMin && id != playerID && GameLogic.speedymen[id].lastRaceDay < GameLogic.day) nrOpponents.addElement( new Integer( id ));
-/*
+			
 
 			// 0.2 valoszinuseggel valaszt legfeljebb 5-el felette allo ellenfelet
 			// a sajat club-bol, vagy a kovetkezo club legelso versenyzojet
@@ -1152,16 +1158,16 @@ public class City extends Track
 				}
 				id--;
 			}
-*/
+			*/
 		}
-
-/*		if( nrOpponents.size() != 0 )
+		/*
+		if( nrOpponents.size() != 0 )
 		{
                         float pprestige = player.car.getPrestige();
                         if (pprestige == 0.0)
                            pprestige = 1.0;
 
-//			System.log("pprestige = "+pprestige);
+			// System.log("pprestige = "+pprestige);
 
 			int n = nrOpponents.size();
 			for( int i=n-1; i>=0; i-- )
@@ -1171,7 +1177,7 @@ public class City extends Track
 				float p = b.nightVd.estimatePrestige() / pprestige;
 				p *= p;
 
-//				System.log("b.name = "+b.name);
+				// System.log("b.name = "+b.name);
 				System.log("b.nightVd.estimatePrestige() = "+b.nightVd.estimatePrestige());
 				System.log("p = "+p);
 				if (p<0.8)
@@ -1183,7 +1189,8 @@ public class City extends Track
 				if (p>5.0 || p<0.8)
 					nrOpponents.removeElementAt(i);
 			}
-		}/**/
+		}
+		*/
 
 		if( nrOpponents.size() != 0 )
 		{
@@ -1234,7 +1241,7 @@ public class City extends Track
 				System.log(" so the odds are:    "+odds);
 				*/
 
-//				if (odds <= ODDS_PINKS && botID[i] >= 30 && Math.random() < 1.0/psr )
+				// if (odds <= ODDS_PINKS && botID[i] >= 30 && Math.random() < 1.0/psr )
 				if (odds <= ODDS_PINKS && GameLogic.speedymen[botID[i]].enabledPinkSlips )
 					nrPrizeList[i] = cash[3];
 				else
@@ -1246,7 +1253,7 @@ public class City extends Track
 				else
 					nrPrizeList[i] = cash[0];
 
-//				System.log(" and the bet is:     "+nrPrizeList[i]);
+				// System.log(" and the bet is:     "+nrPrizeList[i]);
 
 				String tmp;
 
@@ -1269,11 +1276,11 @@ public class City extends Track
 				else
 					s[i] = rank + tmp + b.name + " - $" + nrPrizeList[i];
 
-//				if (config.majomParade)
+				// if (config.majomParade)
 				s[i] = s[i] + " - "+b.getPrestigeString(0)+" - "+b.nightVd.vehicleName;
 
-//				s[i] = s[i] + " - "+String.timeToString( b.bestNightQM, String.TCF_NOMINUTES );
-//				s[i] = s[i] + " - rumored best time: "+String.timeToString( b.bestNightQM, String.TCF_NOMINUTES );
+				// s[i] = s[i] + " - "+String.timeToString( b.bestNightQM, String.TCF_NOMINUTES );
+				// s[i] = s[i] + " - rumored best time: "+String.timeToString( b.bestNightQM, String.TCF_NOMINUTES );
 			}
 
 			int p = new NrOpponentDialog( player.controller, Dialog.DF_MODAL|Dialog.DF_FULLSCREEN, pict, s, nrPrizeList, player.money ).display();
@@ -1334,8 +1341,8 @@ public class City extends Track
 				enableOsd( 0 );
 		}
 
-    pl1 = null;
-    pl2 = null;
+		pl1 = null;
+		pl2 = null;
 
 		//mi is versenyzunk?
 		if( nrPlayerRace )	//biztos, hogy (nrWatching==0)
@@ -1428,7 +1435,7 @@ public class City extends Track
 			newPos.mul( -10.0 );
 			newPos.add( pS );
 			Vector3[] alignedPos = map.alignToRoad( newPos );
-//			player.car.setMatrix( alignedPos[ 0 ], oriS );
+			// player.car.setMatrix( alignedPos[ 0 ], oriS );
 			newPos.y = alignedPos[ 0 ].y;
 			oriS.y += 0.5;
 			player.car.setMatrix( newPos, oriS );
@@ -1532,7 +1539,7 @@ public class City extends Track
 			car2.setMatrix( botPos, oriS );
 			oriS.y-=yNudge;
 
-//			nrBot2 = new Bot( 0, 12345, 1.0 );
+			// nrBot2 = new Bot( 0, 12345, 1.0 );
 			nrBot2 = GameLogic.speedymen[nrBotID2];
 			nrBot2.setDriverObject( GameLogic.HUMAN_OPPONENT );
 			nrBot2.createCar( map, new Vehicle(car2) );
@@ -1559,8 +1566,8 @@ public class City extends Track
 				lookBot( null, 1 );
 				cameraTarget = nrBot1.car;
 				cameraTarget2 = nrBot2.car;
-//				changeCamTarget(nrBot1.car);	//temp.needed
-//				changeCamTarget2(nrBot2.car);
+				// changeCamTarget(nrBot1.car);	//temp.needed
+				// changeCamTarget2(nrBot2.car);
 				nrLookAt = 0;
 			}
 			else
@@ -1592,8 +1599,8 @@ public class City extends Track
 				}
 				else
 				{
-//					osd.showGroup( nightRaceGroup );
-//					enableOsd( 1 );
+					// osd.showGroup( nightRaceGroup );
+					// enableOsd( 1 );
 				}
 				nrDelay = 1;
 			}
@@ -1707,8 +1714,8 @@ public class City extends Track
                                 nrBot1.car.races_lost++;
 
 				//csak hogy legyen valami eletszaga... (mert egyebkent most a semmibol hoztuk letre..)
-//				nrBot1.car.races_lost = 1+Math.random()*nrBot1.fileid*(1.0-nrBot1.aiLevel);
-//				nrBot1.car.races_won =    Math.random()*nrBot1.fileid*nrBot1.aiLevel;
+				// nrBot1.car.races_lost = 1+Math.random()*nrBot1.fileid*(1.0-nrBot1.aiLevel);
+				// nrBot1.car.races_won =    Math.random()*nrBot1.fileid*nrBot1.aiLevel;
 				nrBot1.brain.command("camera 0");
 
 				if( nrPrize > 0 )
@@ -2178,8 +2185,9 @@ public class City extends Track
 
 			//ToDo: brake, slow motion, timer, chase camera
 
-//ALWAYS FROM NOW				if ( GameLogic.gameMode == GameLogic.GM_DEMO )
-//				{
+				// ALWAYS FROM NOW
+				// if ( GameLogic.gameMode == GameLogic.GM_DEMO )
+				// {
 					System.timeWarp( 0.1 );
 					addTimer( 0.1*10.0, 14 );
 					if (player && (id == player.car.id()))
@@ -2213,8 +2221,8 @@ public class City extends Track
 					if (cam)
 						cam.command( "simulate 1" );
 
-//					cleanupRace();
-//					GameLogic.changeActiveSection( parentState );
+					// cleanupRace();
+					// GameLogic.changeActiveSection( parentState );
 
 				if ( GameLogic.gameMode == GameLogic.GM_DEMO )
 				{
@@ -2255,7 +2263,7 @@ public class City extends Track
 					}
 				}
 
-/*
+				/*
 		        raceState = 0;
 
                 int challenger_won = !( challenger == player ^ rank==1 );
@@ -2295,7 +2303,8 @@ public class City extends Track
 				{
 			        addTimer( 3, 8 );	//nem jo a sleep, mert kozben eloveheti az ingame menut!!
 				}
-*/			}
+				*/			
+			}
 		}
     }
 
@@ -2325,7 +2334,7 @@ public class City extends Track
 	{
         abandoned=1;	//sorozatos ujrakihivasok elkerulesere
 
-//		System.log("cleanuprace");
+		// System.log("cleanuprace");
 
 		if (!raceState) return;
         raceState=0;
@@ -2444,7 +2453,7 @@ public class City extends Track
 			else
 				changeCamFollow();	//default
 
-/*
+			/*
 			Vector3 camPos = new Vector3( dirS );
 			camPos.mul( -18.0 );
 			camPos.y+=5;
@@ -2452,7 +2461,7 @@ public class City extends Track
 			cam.setMatrix( camPos, oriS );
 			cam.command( "look " + player.car.id() + " 0,0,0 0,0,0 0.2" );
 			cam.command( "move " + player.car.id() + " 0,0,0 3.5" );
-*/
+			*/
 		}
 	}
 
@@ -2515,7 +2524,7 @@ public class City extends Track
 			case 2:
 				if( timeLock )
 				{
-//					System.log( "skipping dangerous timer event..." );
+					// System.log( "skipping dangerous timer event..." );
 				}
 				else
 				{
@@ -2732,7 +2741,7 @@ public class City extends Track
 								}
 								else
 								{	//valaki megszuntette...?!
-//									System.log( "killer csotany!" );
+									// System.log( "killer csotany!" );
 								}
 							}
 
@@ -3185,7 +3194,7 @@ public class City extends Track
 					newPos.mul( -10.0 );
 					newPos.add( pS );
 					Vector3[] alignedPos = map.alignToRoad( newPos );
-//					player.car.setMatrix( alignedPos[ 0 ], oriS );
+					// player.car.setMatrix( alignedPos[ 0 ], oriS );
 					newPos.y = alignedPos[ 0 ].y;
 					player.car.setMatrix( newPos, oriS );
 					player.car.command( "stop" );
@@ -3593,7 +3602,7 @@ public class NightracesData
 
 	public NightracesData()
 	{
-/*
+		/*
 		startPos[0] = new Vector3( -360.481, 12.457, 663.527 );
 		startOri[0] = new Ypr( -2.999, 0.000, 0.000 );
 		startPos[1] = new Vector3( 149.582, 13.039, 1066.371 );
@@ -3630,10 +3639,10 @@ public class NightracesData
 		startOri[16] = new Ypr( 3.140, 0.000, 0.000 );
 		startPos[17] = new Vector3( -523.833, 10.102, 1447.879 );
 		startOri[17] = new Ypr( 1.253, 0.000, 0.000 );
-//		startPos[18] = new Vector3( 372.788, -26.573, -22.938 );
-//		startOri[18] = new Ypr( -1.117, 0.000, 0.000 );
-//		startPos[19] = new Vector3( 899.611, -26.376, -39.059 );
-//		startOri[19] = new Ypr( 1.818, 0.000, 0.000 );
+		// startPos[18] = new Vector3( 372.788, -26.573, -22.938 );
+		// startOri[18] = new Ypr( -1.117, 0.000, 0.000 );
+		// startPos[19] = new Vector3( 899.611, -26.376, -39.059 );
+		// startOri[19] = new Ypr( 1.818, 0.000, 0.000 );
 		finishPos[0] = new Vector3( -303.727, 11.174, 1059.489 );
 		finishOri[0] = new Ypr( -2.999, 0.000, 0.000 );
 		finishPos[1] = new Vector3( 50.424, 14.454, 602.660 );
@@ -3670,11 +3679,11 @@ public class NightracesData
 		finishOri[16] = new Ypr( 3.140, 0.000, 0.000 );
 		finishPos[17] = new Vector3( -904.633, 9.929, 1322.552 );
 		finishOri[17] = new Ypr( 1.253, 0.000, 0.000 );
-//		finishPos[18] = new Vector3( 732.562, -26.356, -198.408 );
-//		finishOri[18] = new Ypr( -1.117, 0.000, 0.000 );
-//		finishPos[19] = new Vector3( 510.675, -26.708, 59.257 );
-//		finishOri[19] = new Ypr( 1.818, 0.000, 0.000 );
-*/
+		// finishPos[18] = new Vector3( 732.562, -26.356, -198.408 );
+		// finishOri[18] = new Ypr( -1.117, 0.000, 0.000 );
+		// finishPos[19] = new Vector3( 510.675, -26.708, 59.257 );
+		// finishOri[19] = new Ypr( 1.818, 0.000, 0.000 );
+		*/
 		startPos[0] = new Vector3( -296.606, 7.603, 1356.304 );
 		startOri[0] = new Ypr( -1.639, 0.000, 0.000 );
 		startPos[1] = new Vector3( -360.481, 12.457, 663.527 );
@@ -3714,10 +3723,10 @@ public class NightracesData
 		startPos[17] = new Vector3( 350.465, 4.643, -160.232 );
 		startOri[17] = new Ypr( 0.479, 0.000, 0.000 );
 
-//		startPos[18] = new Vector3( 372.788, -26.573, -22.938 );
-//		startOri[18] = new Ypr( -1.117, 0.000, 0.000 );
-//		startPos[19] = new Vector3( 899.611, -26.376, -39.059 );
-//		startOri[19] = new Ypr( 1.818, 0.000, 0.000 );
+		// startPos[18] = new Vector3( 372.788, -26.573, -22.938 );
+		// startOri[18] = new Ypr( -1.117, 0.000, 0.000 );
+		// startPos[19] = new Vector3( 899.611, -26.376, -39.059 );
+		// startOri[19] = new Ypr( 1.818, 0.000, 0.000 );
 
 		finishPos[0] = new Vector3( 102.489, 6.309, 1383.424 );
 		finishOri[0] = new Ypr( -1.639, 0.000, 0.000 );
@@ -3758,9 +3767,9 @@ public class NightracesData
 		finishPos[17] = new Vector3( 165.907, 17.337, -515.365 );
 		finishOri[17] = new Ypr( 0.479, 0.000, 0.000 );
 
-//		finishPos[18] = new Vector3( 732.562, -26.356, -198.408 );
-//		finishOri[18] = new Ypr( -1.117, 0.000, 0.000 );
-//		finishPos[19] = new Vector3( 510.675, -26.708, 59.257 );
-//		finishOri[19] = new Ypr( 1.818, 0.000, 0.000 );
+		// finishPos[18] = new Vector3( 732.562, -26.356, -198.408 );
+		// finishOri[18] = new Ypr( -1.117, 0.000, 0.000 );
+		// finishPos[19] = new Vector3( 510.675, -26.708, 59.257 );
+		// finishOri[19] = new Ypr( 1.818, 0.000, 0.000 );
 	}
 }
