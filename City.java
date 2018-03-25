@@ -65,6 +65,7 @@ public class City extends Track
 	final static int		NR_FINISH = 7;
 	final static int		NR_SHOWFINISH = 8;
 
+	final static int		NUM_DEMOBOTS = 3;
 
     Vector3[]	posGarage = new Vector3[GameLogic.CLUBS];
     Ypr[]		oriGarage = new Ypr[GameLogic.CLUBS];
@@ -88,6 +89,7 @@ public class City extends Track
     Marker                  mStart, mFinish;
 
     Bot						raceBot, demoBot;
+	Bot[]					demoBots;
     Marker                  mRaceBot;
     int						raceState; //0-nop 1-race 2-race after the winner crossed the finish line
 	int						aiChallengeState;
@@ -274,19 +276,12 @@ public class City extends Track
 					}
 
 					raceBot = new Bot( Math.random()*59, Math.random()*1234, Math.random(), 2.0, 2.0, 1.0);
-					demoBot = new Bot( Math.random()*59, Math.random()*1234, Math.random(), 2.0, 2.0, 1.0);
 					raceBot.command("osd 0");
-					demoBot.command("osd 0");
-
 					// raceBot.createCar( map, GameLogic.carSaveDir + "ishuma1" );
 					// demoBot.createCar( map, GameLogic.carSaveDir + "einwagen" );
-
 					VehicleDescriptor vd;
 					vd = GameLogic.getVehicleDescriptor( VehicleType.VS_DEMO );
 					raceBot.createCar( map, new Vehicle( map, vd.id, vd.colorIndex, vd.optical, vd.power, vd.wear, vd.tear ));
-					vd = GameLogic.getVehicleDescriptor( VehicleType.VS_DEMO );
-					demoBot.createCar( map, new Vehicle( map, vd.id, vd.colorIndex, vd.optical, vd.power, vd.wear, vd.tear ));
-
 					if (raceBot.car)
 					{
 						raceBot.car.setParent( map );
@@ -294,15 +289,30 @@ public class City extends Track
 						raceBot.car.command( "reset" );
 						raceBot.car.command( "reload" );	//Fuel and NOS
 					}
-					if (demoBot.car)
-					{
-						demoBot.car.setParent( map );
-						demoBot.car.setMatrix( posStart, oriStart );
-						demoBot.car.command( "reset" );
-						demoBot.car.command( "reload" );	//Fuel and NOS
-					}
 
-					player.car = demoBot.car;	//patch
+					demoBots = new Bot[NUM_DEMOBOTS];
+					for (int i = 0; i < NUM_DEMOBOTS; i++)
+					{
+						demoBots[i] = new Bot( Math.random()*59, Math.random()*1234, Math.random(), 2.0, 2.0, 1.0);		
+						demoBots[i].command("osd 0");
+						vd = GameLogic.getVehicleDescriptor( VehicleType.VS_DEMO );
+						demoBots[i].createCar( map, new Vehicle( map, vd.id, vd.colorIndex, vd.optical, vd.power, vd.wear, vd.tear ));
+						if (demoBots[i].car)
+						{
+							demoBots[i].car.setParent( map );
+							demoBots[i].car.setMatrix( posStart, oriStart );
+							demoBots[i].car.command( "reset" );
+							demoBots[i].car.command( "reload" );	//Fuel and NOS
+						}
+
+						if (i == 0)
+						{
+							demoBot = demoBots[i];
+							player.car = demoBots[i].car;	//patch
+						}
+
+					}
+					
 				}
 				/*
 				else
@@ -313,7 +323,7 @@ public class City extends Track
 					demoBot.createCar( map, new Vehicle(player.car) );
 				}
 				*/
-				changeCamTarget(demoBot.car);
+				changeCamTarget(demoBots[0].car);
 				changeCamTarget2(raceBot.car);	
 			} 
 			else
@@ -605,11 +615,19 @@ public class City extends Track
 
             removeAllTimers();
 
-            destroyRaceBot();
-			if (demoBot)
+			destroyRaceBot();
+			if (demoBots)
 			{
-				demoBot.deleteCar();
-				demoBot=null;
+				for (int i = 0; i < NUM_DEMOBOTS; i++)
+				{
+					if (demoBots[i])
+					{
+						demoBots[i].deleteCar();
+						demoBots[i]=null;
+					}
+				}
+
+				demoBots = null;
 			}
 			//flush :o)
 			if(( GameLogic.gameMode == GameLogic.GM_DEMO )
@@ -958,7 +976,15 @@ public class City extends Track
         Vector3 Pos_right = new Vector3( startDir );
         Pos_right.mul( 1.75 );              //melle
         Pos_right.rotate( new Ypr(-1.57,0.0,0.0) );
-        Pos_right.add( raceStart );
+		Pos_right.add( raceStart );
+		Vector3 Pos_left2 = new Vector3( startDir );
+        Pos_left2.mul( 8.97 );              // 1.75/sin(11.25)
+        Pos_left2.rotate( new Ypr(0.20,0.0,0.0) ); // pi/16
+        Pos_left2.add( raceStart );
+        Vector3 Pos_right2 = new Vector3( startDir );
+        Pos_right2.mul( 8.97 );              //melle
+        Pos_right2.rotate( new Ypr(-0.2,0.0,0.0) );
+        Pos_right2.add( raceStart );
 
 		//sometimes exchange left-right 
 		if (Math.random() > 0.5)
@@ -992,16 +1018,37 @@ public class City extends Track
 			raceBot.brain.command( "AI_BeginRace 0.5" );
 		}
 
-		if (demoBot)
+		if (demoBots)
 		{
-			demoBot.car.command( "reset" );
-			demoBot.car.setMatrix( Pos_right, startOri );
-			demoBot.car.setParent( map );	//quickrace botokhoz kell
-			demoBot.car.command( "stop" ); 
-			demoBot.car.command( "idle" );
-			demoBot.brain.command( "AI_BeginRace 0.5" );
-		} else
-		if (player.car)
+			for (int i = 0; i < NUM_DEMOBOTS; i++)
+			{
+				if (demoBots[i])
+				{
+					demoBots[i].car.command( "reset" );
+					switch (i)
+					{
+						case 0:
+							demoBots[i].car.setMatrix( Pos_right, startOri );
+							break;
+						case 1:
+							demoBots[i].car.setMatrix( Pos_left2, startOri );
+							break;
+						case 2:
+							demoBots[i].car.setMatrix( Pos_right2, startOri );
+							break;
+						default:
+							demoBots[i].car.setMatrix( Pos_right, startOri );
+							break;
+					}
+
+					demoBots[i].car.setParent( map );	//quickrace botokhoz kell
+					demoBots[i].car.command( "stop" ); 
+					demoBots[i].car.command( "idle" );
+					demoBots[i].brain.command( "AI_BeginRace 0.5" );
+				}
+			}
+		}
+		else if (player.car)
 		{
 	        player.car.command( "reset" );
 		    player.car.setMatrix( Pos_right, startOri );
@@ -1027,12 +1074,18 @@ public class City extends Track
 		}
 		if (raceBot)
 		{
-			if (demoBot)
+			if (demoBots)
 			{
 				raceBot.car.command( "start" ); 
-				demoBot.car.command( "start" ); 
-				raceBot.startRace( raceFinish, demoBot );
-				demoBot.startRace( raceFinish, raceBot );
+				raceBot.startRace( raceFinish, demoBots[0] );
+				for (int i = 0; i < NUM_DEMOBOTS; i++)
+				{
+					if (demoBots[i])
+					{
+						demoBots[i].car.command( "start" ); 
+						demoBots[i].startRace( raceFinish, raceBot );
+					}
+				}
 			} else
 			{
 				raceBot.car.command( "start" ); 
@@ -2176,8 +2229,17 @@ public class City extends Track
             if (id == raceBot.car.id())
                     rank=2;
 			else
-            if (demoBot && (id == demoBot.car.id()))
-                    rank=1;
+			if (demoBots)
+			{
+				for (int i = 0; i < NUM_DEMOBOTS; i++)
+				{
+					if (id == demoBots[i].car.id())
+					{
+						rank=1;
+						break;
+					}
+				}
+			}
 
             if( rank )      //a ket versenyzo kozul ert be valaki?
             {
@@ -2196,20 +2258,29 @@ public class City extends Track
 						changeCamTarget(player.car);
 						changeCamTarget2(raceBot.car);	
 					} else
-					if (demoBot && (id == demoBot.car.id()))
+					if (demoBots)
 					{
-						demoBot.car.command( "brake" );
-						demoBot.stop();
-						changeCamTarget(demoBot.car);
-						changeCamTarget2(raceBot.car);	
-					} else
-					if (raceBot && (id == raceBot.car.id()))
+						for (int i = 0; i < NUM_DEMOBOTS; i++)
+						{
+							if (id == demoBots[i].car.id())
+							{
+								demoBots[i].car.command( "brake" );
+								demoBots[i].stop();
+								changeCamTarget(demoBots[i].car);
+								changeCamTarget2(raceBot.car);
+							}
+						}
+					}
+					else if (raceBot && (id == raceBot.car.id()))
 					{
 						raceBot.car.command( "brake" );
 						raceBot.stop();
 						changeCamTarget(raceBot.car);	
-						if (demoBot && demoBot.car)
-							changeCamTarget2(demoBot.car);
+						if (demoBots && demoBots[0] && demoBots[0].car)
+						{
+							changeCamTarget2(demoBots[0].car);
+						}
+
 						else
 						if (player.car)
 							changeCamTarget2(player.car);
