@@ -277,8 +277,7 @@ public class City extends Track
 
 					raceBot = new Bot( Math.random()*59, Math.random()*1234, Math.random(), 2.0, 2.0, 1.0);
 					raceBot.command("osd 0");
-					// raceBot.createCar( map, GameLogic.carSaveDir + "ishuma1" );
-					// demoBot.createCar( map, GameLogic.carSaveDir + "einwagen" );
+					// raceBot.createCar( map, GameLogic.carSaveDir + "Einvagen_test" );
 					VehicleDescriptor vd;
 					vd = GameLogic.getVehicleDescriptor( VehicleType.VS_DEMO );
 					raceBot.createCar( map, new Vehicle( map, vd.id, vd.colorIndex, vd.optical, vd.power, vd.wear, vd.tear ));
@@ -295,8 +294,16 @@ public class City extends Track
 					{
 						demoBots[i] = new Bot( Math.random()*59, Math.random()*1234, Math.random(), 2.0, 2.0, 1.0);		
 						demoBots[i].command("osd 0");
-						vd = GameLogic.getVehicleDescriptor( VehicleType.VS_DEMO );
-						demoBots[i].createCar( map, new Vehicle( map, vd.id, vd.colorIndex, vd.optical, vd.power, vd.wear, vd.tear ));
+						if (i == -1)
+						{
+							demoBots[i].createCar( map, GameLogic.carSaveDir + "Demo_1" );
+						}
+						else
+						{
+							vd = GameLogic.getVehicleDescriptor( VehicleType.VS_DEMO );
+							demoBots[i].createCar( map, new Vehicle( map, vd.id, vd.colorIndex, vd.optical, vd.power, vd.wear, vd.tear ));
+						}
+
 						if (demoBots[i].car)
 						{
 							demoBots[i].car.setParent( map );
